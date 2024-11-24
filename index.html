@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="shortcut icon" href="assets/images/favicon-hune.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <title>Chat App</title>
+</head>
+
+<body>
+
+    <main class="chat-app" chat-app>
+        <div class="side-bar">
+            <div class="container">
+                <div class="side-bar__wrap">
+                    <div class="side-bar__logo" sidebar-avatar>
+                    </div>
+
+                    <nav class="side-bar__nav">
+                        <ul>
+                            <li class="side-bar__nav--item">
+                                <a href="#">
+                                    <i class="fa-solid fa-house"></i>
+                                </a>
+                            </li>
+                            <li class="side-bar__nav--item">
+                                <a href="#">
+                                    <i class="fa-solid fa-message active"></i>
+                                </a>
+                            </li>
+                            <li class="side-bar__nav--item">
+                                <a href="#">
+                                    <i class="fa-solid fa-chart-pie"></i>
+                                </a>
+                            </li>
+                            <li class="side-bar__nav--item">
+                                <a href="#">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </a>
+                            </li>
+                            <li class="side-bar__nav--item">
+                                <a href="#">
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <div class="side-bar__setting" button-setting>
+                        <i class="fa-solid fa-gear"></i>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="message-panel" message-panel>
+            <div class="message-panel__wrap">
+                <div class="message-panel__header">
+                    <h3 class="message-panel__header--title">
+                        Messages
+                        <i class="fa-solid fa-angle-down"></i>
+
+                        <span class="message-panel__header--title__quantitt" quantity-user></span>
+                    </h3>
+
+                    <button class="message-panel__header--button">
+                        <i class="fa-solid fa-plus"></i>
+                        </button=>
+                </div>
+
+                <div action="#" class="message-panel__form">
+                    <form>
+                        <button>
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                        <input type="text" name="search" id="" placeholder="Search message" autocomplete="off">
+                    </form>
+                </div>
+
+                <div class="message-panel__massage-list" list-user>
+                </div>
+            </div>
+        </div>
+
+        <div class="message-box" message-box>
+            <div class="message-box__header">
+                <div class="message-box__user">
+                    <div class="message-box__user--avatar">
+                        <img alt="Avatar" src="https://avatars.githubusercontent.com/u/144928542?v=4" >
+                    </div>
+                    <div class="message-box__user--name">
+                        #Chat chung
+                        <span class="message-box__user--status">
+                            <span class="message-box__user--status-icon"></span>
+                            <span class="message-box__user--status-content">Online</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="massage-box__list-button">
+                    <button class="message-box__button">
+                        <i class="fa-solid fa-phone"></i>
+                        Call
+                    </button>
+
+                    <button class="message-box__button" button-info>
+                        <i class="fa-solid fa-circle-info"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="message-box__chat" box-chat>
+            </div>
+
+            <div class="message-box__footer">
+                <div class="message-box__wrap">
+                    <div class="message-box__actions">
+                        <i class="fa-solid fa-paperclip"></i>
+                        <i class="fa-solid fa-image"></i>
+                        <i class="fa-solid fa-microphone"></i>
+                    </div>
+                    <form class="message-box__form" form-chat>
+                        <input type="text" name="content" placeholder="Type a message" autocomplete="off">
+                        <button type="submit">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="directory" id="directory" show="" directory>
+            <div class="directory__header">
+                <h3 class="directory__header--title">
+                    Directory
+                </h3>
+
+                <button class="directory__header--close" button-close-infor>
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="directory__body">
+                <div class="directory__body--title">
+                    Files
+                    <span>12</span>
+                </div>
+
+                <div class="directory__body--list-files">
+                    <div class="directory__body--file-pdf">
+                        <div class="directory__body--file-pdf--image">
+                            <img src="assets/images/pdf.svg" alt="">
+                        </div>
+
+                        <div class="directory__body--file-pdf--content">
+                            hihihi.pdf
+                        </div>
+
+                        <div class="directory__body--file-pdf--button">
+                            <i class="fa-solid fa-download"></i>
+                        </div>
+                    </div>
+
+                    <div class="directory__body--file-pdf">
+                        <div class="directory__body--file-pdf--image">
+                            <img src="assets/images/image.svg" alt="">
+                        </div>
+
+                        <div class="directory__body--file-pdf--content">
+                            hihihi.png
+                        </div>
+
+                        <div class="directory__body--file-pdf--button">
+                            <i class="fa-solid fa-download"></i>
+                        </div>
+                    </div>
+
+                    <div class="directory__body--file-pdf">
+                        <div class="directory__body--file-pdf--image">
+                            <img src="assets/images/docx.svg" alt="">
+                        </div>
+
+                        <div class="directory__body--file-pdf--content">
+                            hihihi.png
+                        </div>
+
+                        <div class="directory__body--file-pdf--button">
+                            <i class="fa-solid fa-download"></i>
+                        </div>
+                    </div>
+
+                    <div class="directory__body--file-pdf">
+                        <div class="directory__body--file-pdf--image">
+                            <img src="assets/images/excel.svg" alt="">
+                        </div>
+
+                        <div class="directory__body--file-pdf--content">
+                            hihihi.png
+                        </div>
+
+                        <div class="directory__body--file-pdf--button">
+                            <i class="fa-solid fa-download"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="directory__footer">
+                <div class="directory__signup">
+                    <button button-login>Login</button>
+                    <button button-signup>Signup</button>
+                </div>
+                <button button-logout>Logout</button>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="assets/retro-avatar-generator-main/retro-avatar-generator.js"></script>
+    <script type="module" src="assets/js/form.js"></script>
+    <script type="module" src="assets/js/main.js"></script>
+</body>
+
+</html>

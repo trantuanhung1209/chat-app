@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Avatar Generator Demo</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #282c34;
+            font-family: Arial, sans-serif;
+            color: #fff;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            max-width: 800px;
+            border-collapse: collapse;
+            margin: 20px;
+            background-color: #3a3f47;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 15px;
+            color: #fff;
+        }
+        th {
+            background-color: #444b55;
+            text-align: center;
+            font-weight: bold;
+        }
+        td {
+            text-align: center;
+            background-color: #333842;
+        }
+        .retro-avatar {
+            display: inline-block;
+        }
+        .legend {
+            margin-top: 20px;
+            color: #fff;
+            max-width: 800px;
+            background-color: #3a3f47;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+        }
+        .legend-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .legend-item {
+            margin-bottom: 5px;
+        }
+        .legend-item span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Main title -->
+<h1>Retro Avatar Generator Demo</h1>
+
+<!-- Demo table showcasing Retro Avatar Generator with different configurations -->
+<table>
+    <thead>
+        <tr>
+            <th>R2 S64</th>
+            <th>R1 S64</th>
+            <th>D2 S64</th>
+            <th>D1 S16</th>
+            <th>D2 S16</th>
+            <th>D1 R2 S32</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Row 1 -->
+        <tr>
+            <td><span class="retro-avatar" data-retro-id="RetroId1" data-retro-size="64" data-round="2"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId1" data-retro-size="64" data-round="1"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId1" data-retro-size="64" data-round="2" data-density="2"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId1" data-retro-size="16" data-round="2" data-density="1"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId1" data-retro-size="16" data-round="2" data-density="2"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId1" data-retro-size="32" data-round="2" data-density="1"></span></td>
+        </tr>
+
+        <!-- Row 2 -->
+        <tr>
+            <td><span class="retro-avatar" data-retro-id="RetroId2" data-retro-size="64" data-round="2"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId2" data-retro-size="64" data-round="1"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId2" data-retro-size="64" data-round="2" data-density="2"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId2" data-retro-size="16" data-round="2" data-density="1"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId2" data-retro-size="16" data-round="2" data-density="2"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId2" data-retro-size="32" data-round="2" data-density="1"></span></td>
+        </tr>
+
+        <!-- Row 3 -->
+        <tr>
+            <td><span class="retro-avatar" data-retro-id="RetroId3" data-retro-size="64" data-round="2"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId3" data-retro-size="64" data-round="1"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId3" data-retro-size="64" data-round="2" data-density="2"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId3" data-retro-size="16" data-round="2" data-density="1"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId3" data-retro-size="16" data-round="2" data-density="2"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId3" data-retro-size="32" data-round="2" data-density="1"></span></td>
+        </tr>
+
+        <!-- Row 4 -->
+        <tr>
+            <td><span class="retro-avatar" data-retro-id="RetroId-4" data-retro-size="64" data-round="2"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId-4" data-retro-size="64" data-round="1"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId-4" data-retro-size="64" data-round="2" data-density="2"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId-4" data-retro-size="16" data-round="2" data-density="1"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId-4" data-retro-size="16" data-round="2" data-density="2"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId-4" data-retro-size="32" data-round="2" data-density="1"></span></td>
+        </tr>
+
+        <!-- Row 5 -->
+        <tr>
+            <td><span class="retro-avatar" data-retro-id="RetroId5" data-retro-size="64" data-round="2"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId5" data-retro-size="64" data-round="1"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId5" data-retro-size="64" data-round="2" data-density="2"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId5" data-retro-size="16" data-round="2" data-density="1"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId5" data-retro-size="16" data-round="2" data-density="2"></span></td>
+            <td><span class="retro-avatar" data-retro-id="RetroId5" data-retro-size="32" data-round="2" data-density="1"></span></td>
+        </tr>
+
+        <!-- Row 6 -->
+        <tr>
+            <td><span class="retro-avatar" data-retro-id="Retro-Id-6" data-retro-size="64" data-round="2"></span></td>
+            <td><span class="retro-avatar" data-retro-id="Retro-Id-6" data-retro-size="64" data-round="1"></span></td>
+            <td><span class="retro-avatar" data-retro-id="Retro-Id-6" data-retro-size="64" data-round="2" data-density="2"></span></td>
+            <td><span class="retro-avatar" data-retro-id="Retro-Id-6" data-retro-size="16" data-round="2" data-density="1"></span></td>
+            <td><span class="retro-avatar" data-retro-id="Retro-Id-6" data-retro-size="16" data-round="2" data-density="2"></span></td>
+            <td><span class="retro-avatar" data-retro-id="Retro-Id-6" data-retro-size="32" data-round="2" data-density="1"></span></td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Legend explaining the abbreviations -->
+<div class="legend">
+    <div class="legend-title">Legend:</div>
+    <div class="legend-item"><span>R2:</span> Rounded corners with a border radius of 0.25rem.</div>
+    <div class="legend-item"><span>R1:</span> Circular border (fully rounded).</div>
+    <div class="legend-item"><span>S64:</span> Avatar size of 64x64 pixels.</div>
+    <div class="legend-item"><span>S32:</span> Avatar size of 32x32 pixels.</div>
+    <div class="legend-item"><span>S16:</span> Avatar size of 16x16 pixels.</div>
+    <div class="legend-item"><span>D2:</span> Density level 2 (fewer pixels, 4x4 grid).</div>
+    <div class="legend-item"><span>D1:</span> Density level 1 (standard pixels, 8x8 grid).</div>
+</div>
+
+<script>
+    // Instantiate the avatar generator when the document is ready
+    document.addEventListener('DOMContentLoaded', () => {
+        new RetroAvatarGenerator();
+    });
+</script>
+<script src="./retro-avatar-generator.js"></script>
+
+</body>
+</html>
