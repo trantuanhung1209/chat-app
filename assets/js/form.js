@@ -88,7 +88,7 @@ if (formRegister) {
                             console.log(user);
                             const photoURL = user.photoURL;
                             var actionCodeSettings = {
-                                url: `http://127.0.0.1:5500/index.html`
+                                url: `http://127.0.0.1:5501/index.html`
                             };
                             // Gửi email xác nhận
                             sendEmailVerification(user, actionCodeSettings)
@@ -98,6 +98,7 @@ if (formRegister) {
                                         fullName: fullName,
                                         photoURL: photoURL,
                                         state: "online"
+                                        
                                     }).then(() => {
                                         showAlert("Successfully signed up! Please verify your account email.", 5000, "alert--success");
                                         formRegister.name.value = "";

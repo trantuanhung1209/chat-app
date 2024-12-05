@@ -78,6 +78,33 @@ function generateAvatar(
 }
 // end generate avatar
 
+// get full name user 
+function getFirstLetter(name) {
+    // Tách họ tên thành các từ
+    const str = name.split(" ");
+    // Lấy chữ cái đầu của từng từ và viết hoa
+    const firstLetter = str.map(letter => letter.charAt(0).toUpperCase()).join("");
+    return firstLetter;
+}
+// end get full name user
+
+// get user info 
+function getUserInfo(userId) {
+    const userRef = ref(db, `users/${userId}`);
+    return get(userRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            return snapshot.val(); // Trả về thông tin người dùng
+        } else {
+            console.log("No user data found!");
+            return null;
+        }
+    }).catch((error) => {
+        console.error("Error fetching user data:", error);
+    });
+}
+
+// end get user info
+
 function getRandomColor() {
     const colors = ['#007bff', '#28a745', '#dc3545', '#ffc107', '#6c757d']; // Thêm các màu bạn muốn vào đây
     const randomIndex = Math.floor(Math.random() * colors.length);
@@ -258,27 +285,33 @@ onAuthStateChanged(auth, (user) => {
 // form chat
 const formChat = document.querySelector("[form-chat]");
 if (formChat) {
-    formChat.addEventListener("submit", (event) => {
+    formChat.addEventListener("submit", async (event) => {
         event.preventDefault();
+
         const content = formChat.content.value;
         const userId = auth.currentUser.uid;
-        const photoUrl = auth.currentUser.photoURL;
-        const fullName = auth.currentUser.displayName;
-        console.log(content, userId, photoUrl, fullName);
+
         if (content && userId) {
+            // Lấy thông tin người dùng (đồng bộ)
+            const userInfo = await getUserInfo(userId);
+
+            const fullName = userInfo.fullName; // Lấy tên người dùng
+            const photoUrl = userInfo.photoURL? userInfo.photoURL : null; // Lấy ảnh nếu có
+
+            // Lưu tin nhắn vào Firebase
             set(push(ref(db, "chats")), {
                 content: content,
                 userId: userId,
-                photoUrl: photoUrl,
-                fullName: fullName
-            })
+                fullName: fullName,
+                photoUrl: photoUrl
+            });
 
+            // Xóa nội dung trong form sau khi gửi
             formChat.content.value = "";
         }
-
-
-    })
+    });
 }
+
 // end form chat
 
 
@@ -286,27 +319,29 @@ if (formChat) {
 const boxChat = document.querySelector("[box-chat]");
 if (boxChat) {
     const chatsRef = ref(db, 'chats');
-    onChildAdded(chatsRef, (data) => {
+    onChildAdded(chatsRef, async (data) => {
         const key = data.key;
         const content = data.val().content;
         const userId = data.val().userId;
-        let photoUrl = data.val().photoUrl;
         const currentUser = auth.currentUser;
+
+        // Lấy thông tin người dùng
+        const userInfo = await getUserInfo(userId);
+        let photoUrl = userInfo.photoURL;
+        const fullName = userInfo.fullName;
+
+        if (!photoUrl && userInfo && userInfo.photoUrl) {
+            photoUrl = userInfo.photoUrl;
+        }
+        if (!photoUrl) {
+            photoUrl = generateAvatar(`${getFirstLetter(fullName)}`, "white", "#264cca");
+        }
 
         const newChat = document.createElement("div");
         if (userId == currentUser.uid) {
             newChat.setAttribute("class", "message-box__chat--outgoing");
         } else {
             newChat.setAttribute("class", "message-box__chat--incoming");
-        }
-        if (photoUrl == null) {
-            photoUrl = generateAvatar(
-                `${userId}`,
-                "white",
-                "#264cca"
-            );
-        } else {
-            photoUrl = photoUrl;
         }
 
         const newAvatar = `
@@ -336,8 +371,8 @@ if (boxChat) {
         boxChat.appendChild(newChat);
         topScroll();
     });
-
 }
+
 // End show message
 
 // show avatar 
@@ -384,12 +419,12 @@ if (listUser) {
 
             // Kiểm tra nếu là người dùng hiện tại
             if (key === userId) {
-                fullName += " (Tôi)";
+                fullName += "(Tôi)";
             }
 
             // Tạo avatar mặc định nếu không có ảnh
             if (!photoUrl) {
-                photoUrl = generateAvatar(`${key}`, "white", "#264cca");
+                photoUrl = generateAvatar(`${getFirstLetter(fullName)}`, "white", "#264cca");
             }
 
             // Tạo phần tử giao diện người dùng
@@ -406,7 +441,7 @@ if (listUser) {
                     <div class="message-panel__massage-list--item__user--time">12m</div>
                 </div>
                 <div class="message-panel__massage-list--item__content-massage">
-                    Haha oh man <span>🔥</span>
+                    Welcome to my chat app! <span>🔥</span>
                 </div>
             </div>
             `;
@@ -422,7 +457,7 @@ if (listUser) {
 
         // Hiển thị số lượng người dùng
         if (quantityUser) {
-            quantityUser.innerHTML = `${userCount+1}`;
+            quantityUser.innerHTML = `${userCount + 1}`;
         }
 
         // Thêm người dùng hiện tại lên đầu danh sách
@@ -468,13 +503,15 @@ if (listUser) {
             const fullName = data.val().fullName;
             listContent.push(content);
             listName.push(fullName);
+            console.log(listContent);
+            console.log(listName);
         });
-        
+
         const lastContent = listContent[listContent.length - 1] || "Không có tin nhắn.";
         const fullName = listName[listName.length - 1];
 
         const html = `${fullName}: ${lastContent}`;
-        
+
         // Gán nội dung cho phần tử update-content
         const updateContent = document.querySelector("[update-content]");
         if (updateContent) {
