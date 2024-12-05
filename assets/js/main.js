@@ -76,6 +76,7 @@ function generateAvatar(
 
     return canvas.toDataURL("image/png");
 }
+// end generate avatar
 
 function getRandomColor() {
     const colors = ['#007bff', '#28a745', '#dc3545', '#ffc107', '#6c757d']; // Thêm các màu bạn muốn vào đây
@@ -166,6 +167,7 @@ let isPageReload = sessionStorage.getItem('reloadFlag');
 onAuthStateChanged(auth, (user) => {
     if (user) {
         const uid = user.uid;
+        const fullName = user.displayName;
 
         // Hiển thị thông tin của người dùng hiện tại
         messageBox.style.display = "block";
@@ -262,6 +264,7 @@ if (formChat) {
         const userId = auth.currentUser.uid;
         const photoUrl = auth.currentUser.photoURL;
         const fullName = auth.currentUser.displayName;
+        console.log(content, userId, photoUrl, fullName);
         if (content && userId) {
             set(push(ref(db, "chats")), {
                 content: content,
@@ -468,7 +471,7 @@ if (listUser) {
         });
         
         const lastContent = listContent[listContent.length - 1] || "Không có tin nhắn.";
-        const fullName = listName[listName.length - 1] || "Không có tin nhắn.";
+        const fullName = listName[listName.length - 1];
 
         const html = `${fullName}: ${lastContent}`;
         
