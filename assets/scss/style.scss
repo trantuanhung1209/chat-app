@@ -408,6 +408,10 @@ a {
             font-size: 14px;
             font-weight: 400;
             background: #F1F1F1;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+            overflow: hidden;
         }
 
         &__chat--content:last-child {
@@ -423,6 +427,7 @@ a {
             .message-box__chat--content {
                 background-color: $color-primary;
                 color: white;
+                text-align: start;
             }
 
             .message-box__chat--list-content {

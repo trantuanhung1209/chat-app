@@ -348,6 +348,10 @@ a {
   font-size: 14px;
   font-weight: 400;
   background: #F1F1F1;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  overflow: hidden;
 }
 .chat-app .message-box__chat--content:last-child {
   margin: 0;
@@ -361,6 +365,7 @@ a {
 .chat-app .message-box__chat--outgoing .message-box__chat--content {
   background-color: #006fd6;
   color: white;
+  text-align: start;
 }
 .chat-app .message-box__chat--outgoing .message-box__chat--list-content {
   text-align: end;
