@@ -88,7 +88,7 @@ if (formRegister) {
                             console.log(user);
                             const photoURL = user.photoURL;
                             var actionCodeSettings = {
-                                url: `http://127.0.0.1:5501/index.html`
+                                url: `https://vibe-chat-topaz.vercel.app/index.html`
                             };
                             // Gửi email xác nhận
                             sendEmailVerification(user, actionCodeSettings)
