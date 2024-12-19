@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 import { getDatabase, ref, push, set, onValue, update, remove, onChildAdded, onChildChanged, onChildRemoved, child, get } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDsrGukX4jOqINlnTXWGya-HdMVWUsG790",
@@ -102,15 +103,8 @@ function getUserInfo(userId) {
         console.error("Error fetching user data:", error);
     });
 }
-
 // end get user info
 
-function getRandomColor() {
-    const colors = ['#007bff', '#28a745', '#dc3545', '#ffc107', '#6c757d']; // Thêm các màu bạn muốn vào đây
-    const randomIndex = Math.floor(Math.random() * colors.length);
-    return colors[randomIndex];
-}
-// end generate avatar
 
 // bottom scroll
 const topScroll = () => {
@@ -285,29 +279,65 @@ onAuthStateChanged(auth, (user) => {
 // form chat
 const formChat = document.querySelector("[form-chat]");
 if (formChat) {
+
+    // preview image
+    const upload = new FileUploadWithPreview.FileUploadWithPreview('upload-images', {
+        maxFileCount: 6,
+        multiple: true
+    });
+    // end preview image
+
     formChat.addEventListener("submit", async (event) => {
         event.preventDefault();
 
         const content = formChat.content.value;
         const userId = auth.currentUser.uid;
+        const images = upload.cachedFileArray || [];
 
-        if (content && userId) {
+        if ((content || images.length > 0) && userId) {
             // Lấy thông tin người dùng (đồng bộ)
             const userInfo = await getUserInfo(userId);
-
             const fullName = userInfo.fullName; // Lấy tên người dùng
-            const photoUrl = userInfo.photoURL? userInfo.photoURL : null; // Lấy ảnh nếu có
+            const photoUrl = userInfo.photoURL ? userInfo.photoURL : null; // Lấy ảnh nếu có
+            const ImagesLink = [];
+
+            if (images.length > 0) {
+                const url = 'https://api.cloudinary.com/v1_1/dav7n3cu7/image/upload';
+
+                const formData = new FormData();
+
+                for (let i = 0; i < images.length; i++) {
+                    let file = images[i];
+                    formData.append('file', file);
+                    formData.append('upload_preset', 'TuanHung');
+
+                    await fetch(url, {
+                        method: 'POST',
+                        body: formData,
+                    })
+                        .then((response) => {
+                            return response.json();
+                        })
+                        .then((data) => {
+                            ImagesLink.push(data.url);
+                        });
+                }
+            }
+
+            console.log(ImagesLink);
 
             // Lưu tin nhắn vào Firebase
             set(push(ref(db, "chats")), {
                 content: content,
                 userId: userId,
                 fullName: fullName,
-                photoUrl: photoUrl
+                photoUrl: photoUrl,
+                images: ImagesLink
             });
 
             // Xóa nội dung trong form sau khi gửi
             formChat.content.value = "";
+            upload.resetPreviewPanel(); // clear all selected images
         }
     });
 }
@@ -323,6 +353,8 @@ if (boxChat) {
         const key = data.key;
         const content = data.val().content;
         const userId = data.val().userId;
+        const images = await data.val().images;
+        
         const currentUser = auth.currentUser;
 
         // Lấy thông tin người dùng
@@ -344,27 +376,54 @@ if (boxChat) {
             newChat.setAttribute("class", "message-box__chat--incoming");
         }
 
-        const newAvatar = `
-        <div class="message-box__chat--avatar">
-            <img src=${photoUrl} alt="Avatar" id="avatar">
-        </div>
-        `;
-        const newContent = `
-        <div class="message-box__chat--list-content">
-            <div class="message-box__chat--content">
-                ${content}
-            </div>
-        </div>
-        `;
+        let newAvatar = "";
+        let newContent = "";
+        if(content) {
+            newContent = `
+                <div class="message-box__chat--list-content">
+                    <div class="message-box__chat--content">
+                        ${content}
+                    </div>
+                </div>
+            `;
+
+            newAvatar = `
+                <div class="message-box__chat--avatar">
+                    <img src=${photoUrl} alt="Avatar" id="avatar">
+                </div>
+            `;
+        } 
+
+        let htmlImages = "";
+        if (images && images.length > 0) {
+            htmlImages += `<div class="inner-images">`;
+
+            images.forEach(image => {
+                htmlImages += `
+                    <img src="${image}" alt="Image" class="image">
+                `;
+            })
+
+            htmlImages += `</div>`;
+
+            newAvatar = `
+                <div class="message-box__chat--avatar">
+                    <img src=${photoUrl} alt="Avatar" id="avatar">
+                </div>
+            `;
+        }
+
         if (newChat.getAttribute("class") == "message-box__chat--outgoing") {
             newChat.innerHTML = `
             ${newContent}
+            ${htmlImages}
             ${newAvatar}
         `;
         } else {
             newChat.innerHTML = `
             ${newAvatar}
             ${newContent}
+            ${htmlImages}
         `;
         }
 
@@ -372,7 +431,6 @@ if (boxChat) {
         topScroll();
     });
 }
-
 // End show message
 
 // show avatar 
@@ -397,7 +455,6 @@ if (sideBarAvatar) {
 // show user
 const listUser = document.querySelector("[list-user]");
 const quantityUser = document.querySelector("[quantity-user]");
-
 if (listUser) {
     const usersRef = ref(db, 'users');
     onValue(usersRef, (snapshot) => {
@@ -495,20 +552,34 @@ if (listUser) {
 
     const chatsRef = ref(db, 'chats');
     onValue(chatsRef, (snapshot) => {
-        const listContent = [];
-        const listName = [];
+        // const listContent = [];
+        // const listName = [];
+        // const listImages = [];
+        const listData = [];
         // Duyệt qua tất cả tin nhắn
         snapshot.forEach((data) => {
-            const content = data.val().content;
-            const fullName = data.val().fullName;
-            listContent.push(content);
-            listName.push(fullName);
-            console.log(listContent);
-            console.log(listName);
+            // const content = data.val().content;
+            // const fullName = data.val().fullName;
+            // const images = data.val().images;
+            // listContent.push(content);
+            // listName.push(fullName);
+            // if (images) {
+            //     listImages.push(images);
+            // }
+            listData.push(data.val());
         });
 
-        const lastContent = listContent[listContent.length - 1] || "Không có tin nhắn.";
-        const fullName = listName[listName.length - 1];
+
+        let lastContent = "";
+        if (listData[listData.length - 1].content) {
+            lastContent = listData[listData.length - 1].content;
+
+        } else if (listData[listData.length - 1].images) {
+            lastContent = "Đã gửi ảnh";
+        } else {
+            lastContent = "Không có tin nhắn";
+        }
+        const fullName = listData[listData.length - 1].fullName;
 
         const html = `${fullName}: ${lastContent}`;
 
@@ -526,5 +597,31 @@ if (listUser) {
         localStorage.setItem("lastMessage", JSON.stringify(messageData));
     });
 }
+// End show user
+
+
+// show emoji
+const emojiPicker = document.querySelector('emoji-picker');
+if (emojiPicker) {
+    const buttonIcon = document.querySelector('.button-icon');
+    const tooltip = document.querySelector('.tooltip');
+    Popper.createPopper(buttonIcon, tooltip);
+    buttonIcon.addEventListener('click', () => {
+        tooltip.classList.toggle('shown');
+    });
+
+    const inputChat = document.querySelector(".chat-app [form-chat] input[name='content']");
+    emojiPicker.addEventListener('emoji-click', event => {
+        const icon = event.detail.unicode;
+        inputChat.value += icon;
+    });
+
+    document.addEventListener('click', event => {
+        if (!emojiPicker.contains(event.target) && !buttonIcon.contains(event.target)) {
+            tooltip.classList.remove('shown');
+        }
+    });
+}
+// End show emoji
 
 
