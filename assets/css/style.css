@@ -618,10 +618,10 @@ a {
   display: none;
 }
 
-emoji-picker {
+.tooltip {
   position: absolute;
   bottom: 28px;
-  right: -80px;
+  right: -200px;
 }
 
 .custom-file-container {
