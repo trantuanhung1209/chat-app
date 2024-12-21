@@ -89,6 +89,18 @@ function getFirstLetter(name) {
 }
 // end get full name user
 
+// convert http to https
+function convertHttpToHttps(url) {
+    // Kiểm tra xem URL có bắt đầu bằng "http://" không
+    if (url.startsWith("http://")) {
+        // Thay thế "http://" bằng "https://"
+        return url.replace("http://", "https://");
+    }
+    // Nếu không phải HTTP, trả về URL gốc
+    return url;
+}
+// end convert http to https
+
 // add AttachmentParam to download image 
 function addAttachmentParam(url) {
     // Tìm vị trí "upload/" trong URL
@@ -650,10 +662,11 @@ if (listUser) {
         if (buttonDownload.length > 0) {
             buttonDownload.forEach(button => {
                 button.addEventListener("click", () => {
-                    const imageLink = button.getAttribute("image-link");
+                    let imageLink = button.getAttribute("image-link");
 
                     if (imageLink) {
-                        const updatedUrl = addAttachmentParam(imageLink); 
+                        imageLink = addAttachmentParam(imageLink); 
+                        const updatedUrl = convertHttpToHttps(imageLink);
 
                         const a = document.createElement("a");
                         a.href = updatedUrl;
