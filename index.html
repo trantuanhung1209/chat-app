@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/file-upload-with-preview/6.1.2/style.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.7/viewer.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="shortcut icon" href="assets/images/favicon-hune.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -128,7 +129,7 @@
                         </label>
                         <i class="fa-solid fa-microphone"></i>
                     </div>
-                    
+
                     <form class="message-box__form" form-chat>
                         <input type="text" name="content" placeholder="Type a message" autocomplete="off">
                         <span class="button-icon" [button-emoji]>
@@ -161,11 +162,11 @@
             <div class="directory__body">
                 <div class="directory__body--title">
                     Files
-                    <span>12</span>
+                    <span count-image>12</span>
                 </div>
 
-                <div class="directory__body--list-files">
-                    <div class="directory__body--file-pdf">
+                <div class="directory__body--list-files" list-file-directory>
+                    <!-- <div class="directory__body--file-pdf">
                         <div class="directory__body--file-pdf--image">
                             <img src="assets/images/pdf.svg" alt="">
                         </div>
@@ -219,7 +220,7 @@
                         <div class="directory__body--file-pdf--button">
                             <i class="fa-solid fa-download"></i>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -235,6 +236,7 @@
     </main>
 
     <script src="assets/retro-avatar-generator-main/retro-avatar-generator.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.7/viewer.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/file-upload-with-preview/6.1.2/index.iife.min.js"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
     <script type="module" src="assets/js/form.js"></script>

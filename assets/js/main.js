@@ -89,6 +89,23 @@ function getFirstLetter(name) {
 }
 // end get full name user
 
+// add AttachmentParam to download image 
+function addAttachmentParam(url) {
+    // Tìm vị trí "upload/" trong URL
+    const uploadIndex = url.indexOf("upload/");
+
+    if (uploadIndex === -1) {
+        console.error("Không tìm thấy 'upload/' trong URL.");
+        return url; // Trả về URL gốc nếu không có "upload/"
+    }
+
+    // Chỉnh sửa URL bằng cách thêm tham số fl_attachment vào sau "upload/"
+    const updatedUrl = url.slice(0, uploadIndex + 7) + "fl_attachment/" + url.slice(uploadIndex + 7);
+
+    return updatedUrl;
+}
+// End add AttachmentParam to download image 
+
 // get user info 
 function getUserInfo(userId) {
     const userRef = ref(db, `users/${userId}`);
@@ -324,8 +341,6 @@ if (formChat) {
                 }
             }
 
-            console.log(ImagesLink);
-
             // Lưu tin nhắn vào Firebase
             set(push(ref(db, "chats")), {
                 content: content,
@@ -341,7 +356,6 @@ if (formChat) {
         }
     });
 }
-
 // end form chat
 
 
@@ -354,10 +368,10 @@ if (boxChat) {
         const content = data.val().content;
         const userId = data.val().userId;
         const images = await data.val().images;
-        
+
         const currentUser = auth.currentUser;
 
-        // Lấy thông tin người dùng
+        // get user info
         const userInfo = await getUserInfo(userId);
         let photoUrl = userInfo.photoURL;
         const fullName = userInfo.fullName;
@@ -378,7 +392,7 @@ if (boxChat) {
 
         let newAvatar = "";
         let newContent = "";
-        if(content) {
+        if (content) {
             newContent = `
                 <div class="message-box__chat--list-content">
                     <div class="message-box__chat--content">
@@ -392,7 +406,7 @@ if (boxChat) {
                     <img src=${photoUrl} alt="Avatar" id="avatar">
                 </div>
             `;
-        } 
+        }
 
         let htmlImages = "";
         if (images && images.length > 0) {
@@ -426,6 +440,9 @@ if (boxChat) {
             ${htmlImages}
         `;
         }
+
+        // zoom image
+        new Viewer(newChat);
 
         boxChat.appendChild(newChat);
         topScroll();
@@ -554,18 +571,18 @@ if (listUser) {
     onValue(chatsRef, (snapshot) => {
         // const listContent = [];
         // const listName = [];
-        // const listImages = [];
+        const listImages = [];
         const listData = [];
         // Duyệt qua tất cả tin nhắn
         snapshot.forEach((data) => {
             // const content = data.val().content;
             // const fullName = data.val().fullName;
-            // const images = data.val().images;
+            const images = data.val().images;
             // listContent.push(content);
             // listName.push(fullName);
-            // if (images) {
-            //     listImages.push(images);
-            // }
+            if (images && images.length > 0) {
+                listImages.push(images);
+            }
             listData.push(data.val());
         });
 
@@ -595,6 +612,61 @@ if (listUser) {
             lastContent: lastContent
         };
         localStorage.setItem("lastMessage", JSON.stringify(messageData));
+
+        // get images and download images
+        const listFileDirectory = document.querySelector("[list-file-directory]");
+        const countImage = document.querySelector("[count-image]");
+        const imageElement = [];
+        let count = 0;
+        if (listFileDirectory) {
+            listImages.forEach((images) => {
+                images.forEach((image) => {
+                    count++;
+                    imageElement.push(`
+                        <div class="directory__body--file-pdf">
+                            <div class="directory__body--file-pdf--image">
+                                <img src=${image} alt="image">
+                            </div>
+
+                            <div class="directory__body--file-pdf--content">
+                                Image ${count}
+                            </div>
+
+                            <div class="directory__body--file-pdf--button" 
+                            image-link=${image}
+                            >
+                                <i class="fa-solid fa-download"></i>
+                            </div>
+                        </div>
+                        `);
+                });
+            });
+        }
+        listFileDirectory.innerHTML = imageElement.join("");
+        countImage.innerHTML = count;
+
+        // download images
+        const buttonDownload = document.querySelectorAll("[image-link]");
+        if (buttonDownload.length > 0) {
+            buttonDownload.forEach(button => {
+                button.addEventListener("click", () => {
+                    const imageLink = button.getAttribute("image-link");
+
+                    if (imageLink) {
+                        const updatedUrl = addAttachmentParam(imageLink); 
+
+                        const a = document.createElement("a");
+                        a.href = updatedUrl;
+                        a.download = "image";
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    } else {
+                        console.error("Không tìm thấy link ảnh.");
+                    }
+                });
+            })
+        }
     });
 }
 // End show user
@@ -625,3 +697,6 @@ if (emojiPicker) {
 // End show emoji
 
 
+// show list images and download images
+
+// end show list images and download images

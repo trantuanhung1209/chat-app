@@ -507,6 +507,10 @@ a {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  height: 510px;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.0784313725) #FFFFFF;
 }
 .chat-app .directory__body--file-pdf {
   display: flex;

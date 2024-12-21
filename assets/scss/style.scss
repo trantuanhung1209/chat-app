@@ -595,6 +595,10 @@ a {
             display: flex;
             flex-direction: column;
             gap: 8px;
+            height: 510px;
+            overflow-y: scroll;
+            scrollbar-width: thin;
+            scrollbar-color: #00000014 #FFFFFF;
         }
 
         &__body--file-pdf {
