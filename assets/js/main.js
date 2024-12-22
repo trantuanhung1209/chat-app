@@ -69,7 +69,7 @@ function generateAvatar(
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     // Draw text
-    context.font = "bold 100px Be Vietnam Pro";
+    context.font = "bold 100px Be Vietnam Pro, sans-serif";
     context.fillStyle = foregroundColor;
     context.textAlign = "center";
     context.textBaseline = "middle";
@@ -185,7 +185,7 @@ if (buttonLogout) {
             state: "offline"
         }).then(() => {
             signOut(auth).then(() => {
-                window.location.href = "form.html";
+                // window.location.href = "form.html";
             }).catch((error) => {
                 showAlert("Unsuccessfully logout!", 3000, "alert-error");
             });
@@ -296,13 +296,13 @@ onAuthStateChanged(auth, (user) => {
         directorySignup.style.display = "flex";
         messageBox.style.display = "none";
         messagePanel.style.display = "none";
-
-        // Reset avatar
-        avatars.forEach((avatar) => {
-            avatar.src = generateAvatar(`?`, "white", "#264cca");
-        });
-
+        directory.style.display = "none";
         buttonSetting.style.display = "none";
+        const sideBarAvatar = document.querySelector("[sidebar-avatar]");
+        if (sideBarAvatar) {
+            const avatar = generateAvatar(`${getFirstLetter("Web Chat")}`, "white", "#2061E1");
+            sideBarAvatar.innerHTML = `<img alt="Avatar" src="${avatar}">`;
+        }
     }
 });
 // End check user exist
@@ -710,3 +710,4 @@ if (emojiPicker) {
     });
 }
 // End show emoji
+
