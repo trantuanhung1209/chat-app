@@ -301,6 +301,8 @@ onAuthStateChanged(auth, (user) => {
         avatars.forEach((avatar) => {
             avatar.src = generateAvatar(`?`, "white", "#264cca");
         });
+
+        buttonSetting.style.display = "none";
     }
 });
 // End check user exist
@@ -708,8 +710,3 @@ if (emojiPicker) {
     });
 }
 // End show emoji
-
-
-// show list images and download images
-
-// end show list images and download images
